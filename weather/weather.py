@@ -20,7 +20,7 @@ def home():
     cities = db.execute(
         'SELECT * FROM city'
     ).fetchall()
-    print(cities[0]['city_name'])
+    
     returnval = [{"city_id": city['city_id'], "city_name": city['city_name'], "state_name":city['state_name'], "country_code":city['country_code']} for city in cities]
 
     return returnval
@@ -28,13 +28,18 @@ def home():
 @bp.route('/<int:id>', methods=['GET'])
 def check(id):
     db = get_db()
-
+    key = os.getenv('WEATHER_APIKEY')
     error = None
+    print(key)
+    if key is None:
+        error = "Please provide an openweathermap API key"
+
+    
     city = db.execute(
         'SELECT * FROM city WHERE city_id = ?', (id,)
     ).fetchone()
     time = datetime.datetime.now()
-    print(time)
+    
     if city is None:
         error = "City is unsupported"
 
@@ -49,7 +54,6 @@ def check(id):
             response.raise_for_status()
         except requests.exceptions.RequestException as e:
             
-            print(e.args[0])
             
             return str(e.args[0])
         
@@ -156,7 +160,7 @@ def register():
             except db.IntegrityError:
                 error = f"City already exists"
             else:
-                return redirect(url_for("weather"))
+                return redirect(url_for("weather.home"))
 
         flash(error)
 
