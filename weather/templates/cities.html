@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+    {% for city in cities%}
+   
+        <h1> {{ city['city_name']}} </h1>
+        <h1> {{ city['state_name']}} </h1>
+        <h1> {{ city['country_code']}} </h1>
+        <a href="{{ url_for('weather.home') }}{{city['city_id']}}" >Weather</a>
+        
+        
+   
+    {% endfor %}
+{% endblock %}
