@@ -11,10 +11,10 @@ flask --app weather init-db
 flask --app weather run
 ```
 
-#Structure
+# Structure
 Project includes a weather directory where the factory and app logic are contained a well as a test directory for testing them using pytest. 
 
-#Design
+# Design
 The database schema was designed simply, at first the city table included a column for weather but that was removed as the query table can simply be queried for the last mention of a given city if its previous state of weather is needed. In the end queries are stored with their city_id, timestamp, if they were successful, and what was returned (empty if the API call failed). The city table is simply a cities Id, name, state (if in the United States) and ISO country code. This was done as it worked best with the chosen weather API and also to avoid the problem of quering cities with the same name in different countries. 
 
 Optimizations could be made ie. replacing the database for something like postgres and using a caching db for frquently requested destinations. 
